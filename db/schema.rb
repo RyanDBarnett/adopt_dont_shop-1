@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2020_12_15_055816) do
     t.string "city"
     t.integer "zip"
     t.string "description"
-    t.string "status"
+    t.string "status", default: "In Progress"
   end
 
   create_table "pets", force: :cascade do |t|
