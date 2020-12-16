@@ -27,5 +27,16 @@ describe 'As a visitor' do
         expect(page).to have_content("Application Status: In Progress")
       end
     end
+
+    describe "And I fail to fill in any of the form fields'" do
+      it "Then I am taken back to the new applications page and I see a message that I must fill in those fields." do
+        visit '/applications/new'
+
+        click_on 'Submit'
+
+        expect(current_path).to eq('/applications/new')
+        expect(page).to have_content('Application Not Created: You must fill out all fields.')
+      end
+    end
   end
 end
