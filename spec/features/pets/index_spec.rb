@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Pets index page' do
+describe 'Pets index page' do
   before :each do
     @shelter1 = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
     @shelter2 = Shelter.create!(name: "Silly Shelter", address: "123 Silly Ave", city: "Longmont", state: "CO", zip: 80012)
@@ -57,5 +57,11 @@ RSpec.describe 'Pets index page' do
 
     expect(page).to have_content("Calvin")
     expect(page).to_not have_content("Thor")
+  end
+
+  it "Then I see a link to 'Start an Application'" do
+    visit "/pets"
+
+    expect(page).to have_link('Start an Application', href: '/applications/new')
   end
 end
