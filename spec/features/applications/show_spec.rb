@@ -104,12 +104,28 @@ describe 'As a visitor' do
               click_on 'Submit'
             end
 
-            expect(current_path).to eq("/applications/#{@application.id}")
-
             within '#add-a-pet-search-results' do
               expect(page).to have_link(@fluffy.name, href: "/pets/#{@fluffy.id}")
               expect(page).to have_link(@fluff.name, href: "/pets/#{@fluff.id}")
               expect(page).to have_link(@mrfluff.name, href: "/pets/#{@mrfluff.id}")
+            end
+          end
+
+          it 'Then my search is case insensitive' do
+            @Fluffy = @shelter.pets.create!(image:"", name: "Fluffy", description: "dog", approximate_age: 2, sex: "male")
+            @FLUFF = @shelter.pets.create!(image:"", name: "FLUFF", description: "dog", approximate_age: 1, sex: "male")
+            @MrFlUfF = @shelter.pets.create!(image:"", name: "Mr. FlUfF", description: "dog", approximate_age: 1, sex: "male")
+
+            within '#add-a-pet-search-form' do
+              fill_in 'add-a-pet-search', with: 'fluff'
+
+              click_on 'Submit'
+            end
+
+            within '#add-a-pet-search-results' do
+              expect(page).to have_link(@Fluffy.name, href: "/pets/#{@Fluffy.id}")
+              expect(page).to have_link(@FLUFF.name, href: "/pets/#{@FLUFF.id}")
+              expect(page).to have_link(@MrFlUfF.name, href: "/pets/#{@MrFlUfF.id}")
             end
           end
 
