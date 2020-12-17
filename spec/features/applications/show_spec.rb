@@ -45,7 +45,6 @@ describe 'As a visitor' do
 
             within '#add-a-pet-search-results' do
               expect(page).to have_content('Thor')
-              save_and_open_page
             end
           end
         end
