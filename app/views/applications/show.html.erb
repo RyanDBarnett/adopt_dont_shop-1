@@ -11,3 +11,20 @@
   <%= link_to pet.name, "/pets/#{pet.id}" %>
 <% end %>
 <p>Application Status: <%= @application.status %></p>
+
+<%= form_tag "/applications/#{@application.id}", method: :get, id: 'add-a-pet-search-form' do %>
+  <%= label_tag 'add-a-pet-search', 'Add a Pet to this Application' %>
+  <%= search_field_tag 'add-a-pet-search' %>
+  <%= submit_tag 'Submit' %>
+<% end %>
+
+<section id='add-a-pet-search-results'>
+  <h3>Pet Search Results</h3>
+  <ul>
+    <% if @matched_pets %>
+      <% @matched_pets.each do |pet| %>
+        <li><%= pet.name %></li>
+      <% end %>
+    <% end %>
+  </ul>
+</section>
