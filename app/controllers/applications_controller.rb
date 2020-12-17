@@ -1,6 +1,7 @@
 class ApplicationsController < ApplicationController
   def show
     @application = Application.find(params[:id])
+    @matched_pets = Pet.all.where('name = ?', params['add-a-pet-search'])
   end
 
   def new
