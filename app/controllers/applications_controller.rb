@@ -1,7 +1,7 @@
 class ApplicationsController < ApplicationController
   def show
     @application = Application.find(params[:id])
-    @matched_pets = Pet.all.where('name = ?', params['add-a-pet-search'])
+    @matched_pets = Pet.all.where('name = ?', params['add-a-pet-search']) #MVC bad ryan!
   end
 
   def new
@@ -18,9 +18,15 @@ class ApplicationsController < ApplicationController
     end
   end
 
+  def update
+    @application = Application.find(params[:id])
+    @application.update! application_params
+    render :show
+  end
+
   private
 
   def application_params
-    params.permit(:name, :address, :city, :state, :zip)
+    params.permit(:name, :address, :city, :state, :zip, :status, :description)
   end
 end
