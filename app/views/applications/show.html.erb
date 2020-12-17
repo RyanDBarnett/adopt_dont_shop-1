@@ -6,10 +6,15 @@
 <p>Zip: <%= @application.zip %></p>
 <p>Applicant description why their home would be good for this pet: <br/>
 <%= @application.description %></p>
+
 <p>Pet's Being Applied For:</p>
-<% @application.pets.each do |pet| %>
-  <%= link_to pet.name, "/pets/#{pet.id}" %>
-<% end %>
+<ul class='applied-pets'>
+  <% @application.pets.each do |pet| %>
+    <li>
+      <%= link_to pet.name, "/pets/#{pet.id}" %>
+    </li>
+  <% end %>
+</ul>
 <p>Application Status: <%= @application.status %></p>
 
 <%= form_tag "/applications/#{@application.id}", method: :get, id: 'add-a-pet-search-form' do %>
@@ -23,7 +28,7 @@
   <ul>
     <% if @matched_pets %>
       <% @matched_pets.each do |pet| %>
-        <li><%= pet.name %></li>
+        <li><%= pet.name %></li><%= link_to 'Adopt this Pet', "/applications/#{@application.id}/pets/#{pet.id}/adoptions", method: :post %>
       <% end %>
     <% end %>
   </ul>
