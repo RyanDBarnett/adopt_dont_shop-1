@@ -24,6 +24,34 @@ describe 'As a visitor' do
       visit "/applications/#{@application.id}"
     end
 
+    describe "Then I see a section on the page to 'Add a Pet to this Application'" do
+      it 'In that section I see an input where I can search for Pets by name' do
+        within '#add-a-pet-search-form' do
+          expect(page).to have_content('Add a Pet to this Application')
+          expect(page).to have_field('add-a-pet-search')
+        end
+      end
+
+      describe "When I fill in this field with a Pet's name and I click submit" do
+        describe 'Then I am taken back to the application show page' do
+          it 'And under the search bar I see any Pet whose name matches my search' do
+            within '#add-a-pet-search-form' do
+              fill_in 'add-a-pet-search', with: 'Thor'
+
+              click_on 'Submit'
+            end
+
+            expect(current_path).to eq("/applications/#{@application.id}")
+
+            within '#add-a-pet-search-results' do
+              expect(page).to have_content('Thor')
+              save_and_open_page
+            end
+          end
+        end
+      end
+    end
+
     describe "Then I can see the applicant's" do
       it 'name' do
         expect(page).to have_content("Applicant Name: #{@application.name}")
