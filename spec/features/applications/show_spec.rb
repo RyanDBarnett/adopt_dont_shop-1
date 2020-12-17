@@ -84,11 +84,32 @@ describe 'As a visitor' do
               click_on 'Submit'
             end
           end
+
           it 'And under the search bar I see any Pet whose name matches my search' do
             expect(current_path).to eq("/applications/#{@application.id}")
 
             within '#add-a-pet-search-results' do
               expect(page).to have_content('Thor')
+            end
+          end
+
+          it 'Then I see any pet whose name PARTIALLY matches my search' do
+            @fluffy = @shelter.pets.create!(image:"", name: "fluffy", description: "dog", approximate_age: 2, sex: "male")
+            @fluff = @shelter.pets.create!(image:"", name: "fluff", description: "dog", approximate_age: 1, sex: "male")
+            @mrfluff = @shelter.pets.create!(image:"", name: "mr. fluff", description: "dog", approximate_age: 1, sex: "male")
+
+            within '#add-a-pet-search-form' do
+              fill_in 'add-a-pet-search', with: 'fluff'
+
+              click_on 'Submit'
+            end
+
+            expect(current_path).to eq("/applications/#{@application.id}")
+
+            within '#add-a-pet-search-results' do
+              expect(page).to have_link(@fluffy.name, href: "/pets/#{@fluffy.id}")
+              expect(page).to have_link(@fluff.name, href: "/pets/#{@fluff.id}")
+              expect(page).to have_link(@mrfluff.name, href: "/pets/#{@mrfluff.id}")
             end
           end
 

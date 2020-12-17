@@ -10,4 +10,8 @@ class Pet < ApplicationRecord
             }
 
   enum sex: [:female, :male]
+
+  def self.filter_by_name(query)
+    where('name like ?', "%#{query}%")
+  end
 end

@@ -33,7 +33,7 @@
       <ul>
         <% if @matched_pets %>
           <% @matched_pets.each do |pet| %>
-            <li><%= pet.name %></li><%= link_to 'Adopt this Pet', "/applications/#{@application.id}/pets/#{pet.id}/adoptions", method: :post %>
+            <li><%= link_to pet.name, "/pets/#{pet.id}" %> <%= link_to 'Adopt this Pet', "/applications/#{@application.id}/pets/#{pet.id}/adoptions", method: :post %></li>
           <% end %>
         <% end %>
       </ul>
