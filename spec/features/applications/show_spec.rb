@@ -19,6 +19,12 @@ describe 'As a visitor' do
       visit "/applications/#{@application.id}"
     end
 
+    describe 'And I have not added any pets to the application' do
+      it 'Then I do not see a section to submit my application' do
+        expect(page).to_not have_css('#application-submission-section')
+      end
+    end
+
     describe 'And I have added one or more pets to the application' do
       before :each do
         Adoption.create!(pet: @bubba, application: @application)
@@ -40,7 +46,7 @@ describe 'As a visitor' do
             click_on 'submit'
           end
         end
-        
+
         it "Then I am taken back to the application's show page" do
           expect(current_path).to eq("/applications/#{@application.id}")
         end
