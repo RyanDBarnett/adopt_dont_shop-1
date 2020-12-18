@@ -1,7 +1,11 @@
 class ApplicationsController < ApplicationController
   def show
     @application = Application.find(params[:id])
-    @matched_pets = Pet.filter_by_name(params['add-a-pet-search'])
+    if request.env['PATH_INFO'].split('/')[1] == 'admin'
+      render :show_admin
+    else
+      @matched_pets = Pet.filter_by_name(params['add-a-pet-search'])
+    end
   end
 
   def new

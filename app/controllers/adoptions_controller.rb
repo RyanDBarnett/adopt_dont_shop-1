@@ -5,4 +5,12 @@ class AdoptionsController < ApplicationController
     Adoption.create!(pet: @pet, application: @application)
     redirect_to "/applications/#{@application.id}"
   end
+
+  def update
+    adoption = Adoption.find(params[:id])
+    adoption.update!(approved: true)
+    redirect_to "/admin/applications/#{adoption.application.id}"
+  end
+
+  private
 end
