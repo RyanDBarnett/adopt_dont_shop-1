@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+@shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
 @shelter.pets.create!(image:"", name: "Thor", description: "dog", approximate_age: 2, sex: "male")
 @shelter.pets.create!(image:"", name: "Bubba", description: "dog", approximate_age: 1, sex: "male")
 Application.create!(
