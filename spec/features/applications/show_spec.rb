@@ -1,21 +1,54 @@
 require 'rails_helper'
 
 describe 'As a visitor' do
+  before :each do
+    @shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+    @thor = @shelter.pets.create!(image:"", name: "Thor", description: "dog", approximate_age: 2, sex: "male")
+    @bubba = @shelter.pets.create!(image:"", name: "Bubba", description: "dog", approximate_age: 1, sex: "male")
+    @application = Application.create!(
+      name: "John Doe",
+      address: '321 Happy Ave',
+      city: 'Irvine',
+      state: 'CA',
+      zip: 90323,
+      description: nil,
+      status: 'In Progress'
+    )
+  end
+  describe "When I visit an admin application show page ('/admin/applications/:id')" do
+    describe 'For every pet that the application is for' do
+      before :each do
+        Adoption.create!(pet: @bubba, application: @application)
+
+        visit "/admin/applications/#{@application.id}"
+      end
+
+      it 'I see a button to approve the application for that specific pet' do
+        expect(page).to have_link('Approve this Pet')
+      end
+
+      describe 'When I click that button' do
+        before :each do
+          click_on 'Approve this Pet'
+        end
+        
+        it "Then I'm taken back to the admin application show page" do
+          expect(current_path).to eq("/admin/applications/#{@application.id}")
+        end
+
+        it "Then I do not see a button to approve this pet" do
+          expect(page).to_not have_link('Approve this Pet')
+        end
+
+        it 'And instead I see an indicator next to the pet that they have been approved' do
+          expect(page).to have_content('Adoption Approved')
+        end
+      end
+    end
+  end
+
   describe 'When I visit an applications show page' do
     before :each do
-      @shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
-      @thor = @shelter.pets.create!(image:"", name: "Thor", description: "dog", approximate_age: 2, sex: "male")
-      @bubba = @shelter.pets.create!(image:"", name: "Bubba", description: "dog", approximate_age: 1, sex: "male")
-      @application = Application.create!(
-        name: "John Doe",
-        address: '321 Happy Ave',
-        city: 'Irvine',
-        state: 'CA',
-        zip: 90323,
-        description: nil,
-        status: 'In Progress'
-      )
-
       visit "/applications/#{@application.id}"
     end
 

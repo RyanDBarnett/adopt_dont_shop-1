@@ -9,4 +9,8 @@ class Application < ApplicationRecord
   def set_defaults
     self.status ||= 'In Progress'
   end
+
+  def find_adoption_by_pet(pet)
+    adoptions.find_by(pet_id: pet.id)
+  end
 end

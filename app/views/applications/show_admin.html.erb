@@ -1,0 +1,56 @@
+<h2>Application <%= @application.id %></h2>
+<p>Applicant Name: <%= @application.name %></p>
+<p>Address: <%= @application.address %></p>
+<p>City: <%= @application.city %></p>
+<p>State: <%= @application.state %></p>
+<p>Zip: <%= @application.zip %></p>
+<p>Applicant description why their home would be good for this pet: <br/>
+<% if @application.description %>
+  <%= @application.description %>
+<% end %>
+</p>
+
+<p>Pet's Being Applied For:</p>
+<ul id='applied-pets-list'>
+  <% @application.pets.each do |pet| %>
+    <li>
+      <%= link_to pet.name, "/pets/#{pet.id}" %>
+      <% unless @application.find_adoption_by_pet(pet).approved %>
+        <%= link_to 'Approve this Pet', "/adoptions/#{@application.find_adoption_by_pet(pet).id}", method: :patch %>
+      <% else %>
+        "Adoption Approved"
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+<p>Application Status: <%= @application.status %></p>
+
+<% if @application.pets.empty? %>
+  <section id='add-a-pet-search-container'>
+    <%= form_tag "/applications/#{@application.id}", method: :get, id: 'add-a-pet-search-form' do %>
+      <%= label_tag 'add-a-pet-search', 'Add a Pet to this Application' %>
+      <%= search_field_tag 'add-a-pet-search' %>
+      <%= submit_tag 'Submit' %>
+    <% end %>
+
+    <section id='add-a-pet-search-results'>
+      <h3>Pet Search Results</h3>
+      <ul>
+        <% if @matched_pets %>
+          <% @matched_pets.each do |pet| %>
+            <li><%= link_to pet.name, "/pets/#{pet.id}" %> <%= link_to 'Adopt this Pet', "/applications/#{@application.id}/pets/#{pet.id}/adoptions", method: :post %></li>
+          <% end %>
+        <% end %>
+      </ul>
+    </section>
+  </section>
+<% else %>
+  <section id='application-submission-section'>
+    <%= form_tag "/applications/#{@application.id}", method: :patch, id: 'application-submit-form' do %>
+      <%= label_tag :description, 'Please describe why you would make a good pet owner' %>
+      <%= text_field_tag :description %>
+      <%= hidden_field_tag :status, 'Pending' %>
+      <%= submit_tag 'submit' %>
+    <% end %>
+  </section>
+<% end %>
