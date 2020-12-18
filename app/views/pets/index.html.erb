@@ -1,8 +1,10 @@
 <h1>All Pets</h1>
 
+<%= link_to "Start an Application", '/applications/new' %>
+
 <% @pets.each do |pet| %>
   <% if pet.adoptable == true %>
-  <section id="pet-<%=pet.id%>">
+    <section id="pet-<%=pet.id%>">
       <h2>name: <%= link_to "#{pet.name}", "/pets/#{pet.id}" %></h2>
       <%= image_tag "#{pet.image}" %><br>
       approx age: <%= pet.approximate_age %><br>

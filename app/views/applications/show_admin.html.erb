@@ -15,6 +15,11 @@
   <% @application.pets.each do |pet| %>
     <li>
       <%= link_to pet.name, "/pets/#{pet.id}" %>
+      <% unless @application.find_adoption_by_pet(pet).approved %>
+        <%= link_to 'Approve this Pet', "/adoptions/#{@application.find_adoption_by_pet(pet).id}", method: :patch %>
+      <% else %>
+        "Adoption Approved"
+      <% end %>
     </li>
   <% end %>
 </ul>

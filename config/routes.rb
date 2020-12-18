@@ -21,5 +21,13 @@ Rails.application.routes.draw do
   post "/shelters/:shelter_id/pets", to: "shelter_pets#create"
   get "/shelters/:id/pets/:id", to: "pets#show"
 
+  get '/applications/new', to: 'applications#new'
+  post '/applications', to: 'applications#create'
   get '/applications/:id', to: 'applications#show'
+  patch 'applications/:id', to: 'applications#update'
+  post '/applications/:id/pets/:pet_id/adoptions', to: 'adoptions#create'
+
+  get '/admin/applications/:id', to: 'applications#show'
+
+  patch '/adoptions/:id', to: 'adoptions#update'
 end
